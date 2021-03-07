@@ -1,10 +1,12 @@
 import turtle
 import tkinter as tk
+import random
 
-""" This app allows the user to draw a mandala by creating multiple polygons based on his input.
+""" This app allows the user to draw a mandala by creating multiple polygons based on his input. Alternatively, the user
+can also draw randomly generated mandalas.
     """
 
-# Parameters for the labels and entry fields.
+# Defining the parameters for the labels and entry fields.
 text_font = 'Verdana'
 
 label_conf = {'pady': 10, 'font': (text_font, 12)}
@@ -60,8 +62,16 @@ pen_size = tk.Entry(cnf=entry_conf)
 pen_size_label.pack()
 pen_size.pack()
 
+def from_rgb(rgb):
+    """Translating an RGB tuple into a tkinter friendly color code
+    """
+    return "#%02x%02x%02x" % rgb
 
-def draw_polygons(no_recs=1, offset=3, sides=4):
+def draw_polygons(no_recs=1, offset=3, sides=4, deg=12, rec_length=24):
+    """
+    Draws a number of polygons.
+    :return: polygon
+    """
     for i in range(0, no_recs):
         for j in range(0, sides):
             turtle.forward(rec_length)
@@ -69,28 +79,58 @@ def draw_polygons(no_recs=1, offset=3, sides=4):
 
         turtle.left(offset)
 
-
-def test():
-    global deg
-    global rec_length
+def draw_poly():
+    """
+    Gets user input and draws a number of polygons, based on the users input.
+    :return: polygon
+    """
 
     number_recs = int(poly_count.get())
     offset_deg = int(offset_entry.get())
     poly_sides = int(sides_entry.get())
-    deg = 360 / poly_sides
+    deg = round(360 / poly_sides)
     rec_length = int(side_length.get())
 
+    # Pen color defaults to black, if not stated otherwise.
     if line_color.get() == '':
         turtle.pencolor('Black')
     else:
         turtle.pencolor(line_color.get())
 
+    # Pen size defaults to 1, if not stated otherwise.
     if pen_size.get() == '':
         turtle.pensize(1)
     else:
         turtle.pensize(pen_size.get())
 
-    draw_polygons(number_recs, offset_deg, poly_sides)
+    draw_polygons(number_recs, offset_deg, poly_sides, deg, rec_length)
+
+    turtle.hideturtle()
+
+
+def draw_poly_rand():
+    """
+    Draws a polygon, based on random arguments.
+    :return:
+    """
+
+    no_poly = random.randint(20, 40)
+    offset_deg = random.randint(4, 90)
+    poly_sides = random.randint(3, 18)
+    deg = round(360 / poly_sides)
+    rec_length = random.randint(10, 30)
+
+    turtle.pensize(random.randint(1, 5))
+
+    r = random.randint(0, 255)
+    g = random.randint(0, 255)
+    b = random.randint(0, 255)
+
+    pen_color = from_rgb((r, g, b))
+
+    turtle.pencolor(pen_color)
+
+    draw_polygons(no_poly, offset_deg, poly_sides, deg, rec_length)
 
     turtle.hideturtle()
 
@@ -102,7 +142,7 @@ divider_label.pack()
 # Drawing a user defined mandala.
 draw_poly_button = tk.Button(text="Let's draw!",
                              cnf=button_conf,
-                             command=test)
+                             command=draw_poly)
 
 draw_poly_button.pack()
 
@@ -110,44 +150,11 @@ draw_poly_button.pack()
 divider_label_2 = tk.Label(text='')
 divider_label_2.pack()
 
-# Draw a mandala with random input.
+# Drawing a mandala with random input.
 draw_random = tk.Button(text="Surprise me!",
                              cnf=button_conf,
-                             command=test)
+                             command=draw_poly_rand)
 
 draw_random.pack()
-
-# Clearing the canvas.
-
-
-# Exiting the app.
-
-
-
-
-'''
-print('Please enter the length of the square:')
-rec_length = int(input())
-print()
-print('How many rectangles do you want to draw?')
-no_recs = int(input())
-print()
-print('Even or custom offset between the polygons?')
-offset_choice = input()
-if offset_choice == 'Even':
-    offset = 360/no_recs
-else:
-    print('Enter the offset you want to use:')
-    offset = int(input())
-print()
-print('How many sides should the polygon have')
-sides = int(input())
-
-deg = 360/sides
-
-draw_polygons(no_recs, offset, sides)
-
-turtle.mainloop()
-'''
 
 window.mainloop()
