@@ -16,7 +16,7 @@ button_conf = {'pady': 10, 'width': 15, 'font': (text_font, 10, 'bold'), 'fg': '
 window = tk.Tk()
 window.title('Mandala Creator v. 0.1')
 
-# Greeting the user and telling him what the app is about.
+# Greeting the user and providing information on the app.
 welcome_label = tk.Label(text='Welcome to the Mandala Creator!', pady=20, font=(text_font, 25, 'bold'))
 welcome_label.pack()
 
@@ -84,7 +84,7 @@ def draw_poly():
     Gets user input and draws a number of polygons, based on the users input.
     :return: polygon
     """
-
+    # Getting user input from the entry fields.
     number_recs = int(poly_count.get())
     offset_deg = int(offset_entry.get())
     poly_sides = int(sides_entry.get())
@@ -113,7 +113,7 @@ def draw_poly_rand():
     Draws a polygon, based on random arguments.
     :return:
     """
-
+    # Creating random arguments for the draw_polygens function
     no_poly = random.randint(20, 40)
     offset_deg = random.randint(4, 90)
     poly_sides = random.randint(3, 18)
